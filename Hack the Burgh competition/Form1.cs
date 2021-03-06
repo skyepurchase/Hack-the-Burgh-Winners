@@ -63,7 +63,7 @@ namespace Hack_the_Burgh_competition
                 Panel prev = listpanel[listpanel.Count - 1];
                 prev.Visible = true;
             }
-
+            
 
         }
 
@@ -164,7 +164,7 @@ namespace Hack_the_Burgh_competition
             chart1.ChartAreas[0].AxisY.LabelStyle.Format = "";
             if (sr != null) sr.Close();
         }
-
+        
         private void btnChallenge1_Click(object sender, EventArgs e)
         {
             ChangePanel(pnlChallenges, pnlChallenge1);
