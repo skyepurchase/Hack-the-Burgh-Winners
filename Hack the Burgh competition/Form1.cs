@@ -77,6 +77,7 @@ namespace Hack_the_Burgh_competition
             ChangePanel(panel2, pnlTraining);
         }
 
+
         private void btnTerminologies_Click(object sender, EventArgs e)
         {
             ChangePanel(pnlTraining, pnlInformation);
@@ -101,6 +102,13 @@ namespace Hack_the_Burgh_competition
             lblInfo.Text = readfile("Training information", "Concept 2.txt");
         }
 
+        private void btnChallenges_Click(object sender, EventArgs e)
+        {
+            ChangePanel(panel2, pnlChallenges);
+
+        }
+
+
         private string readfile(string dirName, string fileName)
         {
             // reads the file of the given name, which will contain information for the chosen topic
@@ -124,6 +132,61 @@ namespace Hack_the_Burgh_competition
         } ///
 
         private void pnlInformation_VisibleChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void LoadData()
+        {
+            // file path
+            string cwd = Directory.GetCurrentDirectory();
+            // moves cwd back 2 spaces (to access the folder where the files are kept)
+            List<string> filedir = cwd.Split('\\').ToList();
+            filedir.RemoveRange(filedir.Count - 2, 2);
+            string path = String.Join("\\", filedir.ToArray()) + '\\' + "Data" + '\\' + "Queried Data.txt";
+
+
+            DataTable dt = new DataTable();
+            dt.Columns.Add("X_Value", typeof(double));
+            dt.Columns.Add("Y_Value", typeof(double));
+
+            StreamReader sr = new StreamReader(@path);
+            string line;
+            while ((line = sr.ReadLine()) != null)
+            {
+                string[] strarr = line.Split(',');
+                dt.Rows.Add(strarr[0], strarr[1]);
+            }
+            chart1.DataSource = dt;
+            chart1.Series["Series1"].XValueMember = "X_Value";
+            chart1.Series["Series1"].YValueMembers = "Y_Value";
+            //chart1.Series["Series1"].ChartType = SeriesChartType.Line;
+            chart1.ChartAreas[0].AxisY.LabelStyle.Format = "";
+            if (sr != null) sr.Close();
+        }
+        
+        private void btnChallenge1_Click(object sender, EventArgs e)
+        {
+            ChangePanel(pnlChallenges, pnlChallenge1);
+            LoadData();
+        }
+
+        private void btnChallenge2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnChallenge3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnChallenge4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnChallenge5_Click(object sender, EventArgs e)
         {
 
         }
