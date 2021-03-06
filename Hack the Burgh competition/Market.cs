@@ -17,6 +17,16 @@ namespace Hack_the_Burgh_competition
             }
         }
 
+        public int buyStock(string type, string date, int number)
+        {
+            return this.stocks[type].buyStock(date, number);
+        }
+
+        public int sellStock(string type, string date, int number)
+        {
+            return this.stocks[type].sellStock(date, number);
+        }
+
         public void newStock(string type)
         {
             stocks.Add(type, new Stock(type));
@@ -74,6 +84,18 @@ namespace Hack_the_Burgh_competition
             }
 
             File.WriteAllText("GraphData.txt", points);
+        }
+
+        public int buyStock(string date, int number)
+        {
+            int cost = int.Parse(price[date]);
+            return cost * number;
+        }
+
+        public int sellStock(string date, int number)
+        {
+            int profit = int.Parse(price[date]);
+            return profit * number;
         }
     }
 }
