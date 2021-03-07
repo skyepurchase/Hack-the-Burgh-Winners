@@ -6,8 +6,8 @@ namespace Hack_the_Burgh_competition
 {
     class Database
     {
-        private Dictionary<string, Dictionary<DateTime, string>> closeStocks = new Dictionary<string, Dictionary<DateTime, string>>();
-        private Dictionary<string, Dictionary<DateTime, string>> openStocks = new Dictionary<string, Dictionary<DateTime, string>>(); // Don't worry about these I understand them
+        private Dictionary<string, Dictionary<string, string>> closeStocks = new Dictionary<string, Dictionary<string, string>>();
+        private Dictionary<string, Dictionary<string, string>> openStocks = new Dictionary<string, Dictionary<string, string>>(); // Don't worry about these I understand them
         private string[] stockTypes = { "Tech", "Oil", "Entertainment", "Travel", "Gold" };  // Hard code 5 types
 
         public Database()
@@ -21,23 +21,20 @@ namespace Hack_the_Burgh_competition
                 {
                     string[] rowData = csvLinesClose[i].Split(','); // Get the date and price from .csv
 
-                    DateTime date = this.ParseDate(rowData[0]); 
-
                     if (!closeStocks.ContainsKey(type)) {
-                        closeStocks.Add(type, new Dictionary<DateTime, string>());
+                        closeStocks.Add(type, new Dictionary<string, string>());
                     }
-                    closeStocks[type].Add(date, rowData[1]);  // For this specific stock add the price related to this date
+                    closeStocks[type].Add(rowData[0], rowData[1]);  // For this specific stock add the price related to this date
+                    Console.WriteLine(type + ':' + rowData[0]);
                 }
                 for (int i = 1; i < csvLinesOpen.Length; i++)
                 {
                     string[] rowData = csvLinesOpen[i].Split(','); // Same as above but the other file
 
-                    DateTime date = this.ParseDate(rowData[0]);
-
                     if (!openStocks.ContainsKey(type)) {
-                        openStocks.Add(type, new Dictionary<DateTime, string>());
+                        openStocks.Add(type, new Dictionary<string, string>());
                     }
-                    openStocks[type].Add(date, rowData[1]);
+                    openStocks[type].Add(rowData[0], rowData[1]);
                 }
             }
         }
@@ -48,15 +45,18 @@ namespace Hack_the_Burgh_competition
 
             Dictionary<string, string> result = new Dictionary<string, string>();  // The link between dates and prices
 
+            Console.WriteLine(type);
             for (int i = 0; i < days; i++)
             {
                 date = date.AddDays(1); // Get the next day
+                string stringDate = date.Year.ToString() + '-' + date.Month.ToString().PadLeft(2, '0') + '-' + date.Day.ToString().PadLeft(2, '0');
+                Console.WriteLine(stringDate);
 
                 string key = date.Day.ToString(); // This is just for visual purposes
 
-                if (this.openStocks[type].ContainsKey(date) && this.closeStocks[type].ContainsKey(date)) // Only add if both open and closed have a value
+                if (this.openStocks[type].ContainsKey(stringDate) && this.closeStocks[type].ContainsKey(stringDate)) // Only add if both open and closed have a value
                 {
-                    result[key] = this.openStocks[type][date] + ',' + this.closeStocks[type][date];  // IMPORTANT: still need to put a comma between date and these values
+                    result.Add(key, this.openStocks[type][stringDate] + ',' + this.closeStocks[type][stringDate]);  // IMPORTANT: still need to put a comma between date and these values
                                                                                                      // ALSO: need a comma after these values, VJ will probably explain
                 } 
             }
@@ -77,14 +77,16 @@ namespace Hack_the_Burgh_competition
             for (int i = 0; i < months; i++)
             {
                 date = date.AddMonths(1); // Get next calendar month
+                string stringClose = date.Year.ToString() + '-' + date.Month.ToString().PadLeft(2, '0') + '-' + date.Day.ToString().PadLeft(2, '0');
 
                 DateTime openDate = date.AddMonths(-1).AddDays(1); // Get the start of the month
+                string stringOpen = openDate.Year.ToString() + '-' + openDate.Month.ToString().PadLeft(2, '0') + '-' + openDate.Day.ToString().PadLeft(2, '0');
 
                 string key = date.Month.ToString(); // Don't care about days
 
-                if (this.openStocks[type].ContainsKey(openDate) && this.closeStocks[type].ContainsKey(date))
+                if (this.openStocks[type].ContainsKey(stringOpen) && this.closeStocks[type].ContainsKey(stringClose))
                 {
-                    result[key] = this.openStocks[type][openDate] + ',' + this.closeStocks[type][date]; // Same as above but with months not days
+                    result.Add(key, this.openStocks[type][stringOpen] + ',' + this.closeStocks[type][stringClose]); // Same as above but with months not days
                 }
             }
 
@@ -104,11 +106,15 @@ namespace Hack_the_Burgh_competition
             for (int i = 0; i < days; i++)
             {
                 date = date.AddYears(1);
+                string stringClose = date.Year.ToString() + '-' + date.Month.ToString().PadLeft(2, '0') + '-' + date.Day.ToString().PadLeft(2, '0');
+
                 DateTime openDate = date.AddYears(-1).AddDays(1);
+                string stringOpen = openDate.Year.ToString() + '-' + openDate.Month.ToString().PadLeft(2, '0') + '-' + openDate.Day.ToString().PadLeft(2, '0');
+
                 string key = date.Year.ToString();
-                if (this.openStocks[type].ContainsKey(openDate) && this.closeStocks[type].ContainsKey(date))
+                if (this.openStocks[type].ContainsKey(stringOpen) && this.closeStocks[type].ContainsKey(stringClose))
                 {
-                    result[key] = this.openStocks[type][openDate] + ',' + this.closeStocks[type][date]; // Same as above but with years not months
+                    result.Add(key, this.openStocks[type][stringOpen] + ',' + this.closeStocks[type][stringClose]); // Same as above but with years not months
                 }
             }
 
@@ -117,40 +123,64 @@ namespace Hack_the_Burgh_competition
 
         public float price(string type, string startDate) // To be used to judge whether a stock can actually be bought with funds
         {
-            DateTime date = this.ParseDate(startDate);
+            string[] stringDate = startDate.Split('-');
+            int year = int.Parse(stringDate[0]);
+            DateTime date = new DateTime(year, 1, 1);
+            string key = date.Year.ToString() + '-' + date.Month.ToString().PadLeft(2, '0') + '-' + date.Day.ToString().PadLeft(2, '0');
 
-            if (this.closeStocks[type].ContainsKey(date))
-                {
-                return float.Parse(this.closeStocks[type][date]); // Prices are floats the value in £
+            if (this.closeStocks[type].ContainsKey(key))
+            {
+                return float.Parse(this.closeStocks[type][key]); // Prices are floats the value in £
             }
             else
-                {
-            return 0f;
-                    }
+            {
+                return 0f;
+            }
         }
 
-        public void buy(string type, string startDate, int number)
+        public bool buy(string type, string startDate, int number)
         {
-            DateTime date = this.ParseDate(startDate);
+            string[] stringDate = startDate.Split('-');
+            int year = int.Parse(stringDate[0]);
+            DateTime date = new DateTime(year, 1, 1);
+            string key = date.Year.ToString() + '-' + date.Month.ToString().PadLeft(2, '0') + '-' + date.Day.ToString().PadLeft(2, '0');
 
-            float currPrice = float.Parse(this.closeStocks[type][date]);
-            // Assume say 1000 people investing in the stock
-            float newPrice = currPrice * (1000 + number) / 1000;  
+            if (this.closeStocks[type].ContainsKey(key))
+            {
+                float currPrice = float.Parse(this.closeStocks[type][key]);
+                // Assume say 1000 people investing in the stock
+                float newPrice = currPrice * (1000 + number) / 1000;
 
-            this.closeStocks[type][date] = newPrice.ToString(); // Edit the value of the stock
+                this.closeStocks[type][key] = newPrice.ToString(); // Edit the value of the stock
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public float sell(string type, string startDate, int number)
         {
-            DateTime date = this.ParseDate(startDate);
+            string[] stringDate = startDate.Split('-');
+            int year = int.Parse(stringDate[0]);
+            DateTime date = new DateTime(year, 1, 1);
+            string key = date.Year.ToString() + '-' + date.Month.ToString().PadLeft(2, '0') + '-' + date.Day.ToString().PadLeft(2, '0');
 
-            float currPrice = float.Parse(this.closeStocks[type][date]);
-            // Assume say 1000 people investing in the stock
-            float newPrice = currPrice * (1000 - number) / 1000;
+            if (this.closeStocks[type].ContainsKey(key))
+            {
+                float currPrice = float.Parse(this.closeStocks[type][key]);
+                // Assume say 1000 people investing in the stock
+                float newPrice = currPrice * (1000 - number) / 1000;
 
-            this.closeStocks[type][date] = newPrice.ToString(); // Edit the value of the stock
+                this.closeStocks[type][key] = newPrice.ToString(); // Edit the value of the stock
 
-            return currPrice * number; // Ignoring the fact that this might not actually be viable. That's a problem for actual development
+                return currPrice * number; // Ignoring the fact that this might not actually be viable. That's a problem for actual development
+            }
+            else
+            {
+                return 0f;
+            }
         }
 
         public DateTime ParseDate(string repr)

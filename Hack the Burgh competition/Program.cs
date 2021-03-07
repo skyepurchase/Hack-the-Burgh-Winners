@@ -125,11 +125,8 @@ namespace Hack_the_Burgh_competition
                 dt.Columns.Add("Y1_Value", typeof(double));
                 dt.Columns.Add("Y2_Value", typeof(double));
 
-                MessageBox.Show(data.Count.ToString());
                 foreach (string x in data.Keys)
                 {
-                    MessageBox.Show(x);
-                    MessageBox.Show(data[x]);
                     string[] ypoints = data[x].Split(',');
                     dt.Rows.Add(x.ToString(), ypoints[0].ToString(), ypoints[1].ToString());
                 }
