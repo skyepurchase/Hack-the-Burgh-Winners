@@ -145,7 +145,7 @@ namespace Hack_the_Burgh_competition
 
         public bool buy(int amount)
         {
-            if (this.portfolio == null)
+            if (this.portfolio == null || amount == 0)
             {
                 return false;
             }
