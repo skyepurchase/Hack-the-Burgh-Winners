@@ -117,24 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label6.Text" xml:space="preserve">
-    <value>Test your invesment skills by trading Gold! You are an Employee working in a large coorporation who wants to see what you're capable off. They start you off with £1000 to invest, and you must make a profit of £10 within the week.
-</value>
-  </data>
-  <data name="label7.Text" xml:space="preserve">
-    <value>Impressed with your skills, the company wants to take it to the next level. You are one of the 2 condidates in line for a promotion. You must impress your boss by making at least £10000 profit within a month, using an initial investment of £10000 to secure your spot in the heirarchy!
-</value>
-  </data>
-  <data name="label8.Text" xml:space="preserve">
-    <value>Test you invesment skills by trading Gold! You are an Employee working in a large coorporation who wants to see what you're capable off. They start you off with £1000 to invest, and you must make a profit of £10 within the week.
-</value>
-  </data>
-  <data name="label9.Text" xml:space="preserve">
-    <value>Test you invesment skills by trading Gold! You are an Employee working in a large coorporation who wants to see what you're capable off. They start you off with £1000 to invest, and you must make a profit of £10 within the week.
-</value>
-  </data>
-  <data name="label10.Text" xml:space="preserve">
-    <value>Test you invesment skills by trading Gold! You are an Employee working in a large coorporation who wants to see what you're capable off. They start you off with £1000 to invest, and you must make a profit of £10 within the week.
-</value>
-  </data>
 </root>
