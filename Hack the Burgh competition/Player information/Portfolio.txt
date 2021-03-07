@@ -1,0 +1,15 @@
+Challenge name: Challenge 2
+
+Present Date: 2000-10-15
+
+Goal: make £10000 profit by 2000-12-01
+
+Currently owned stock quantity: 3000
+
+Current stock price: £1.80
+
+Available money: £5780
+
+Total profit: £1200
+
+

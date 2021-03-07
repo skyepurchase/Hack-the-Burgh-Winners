@@ -1,4 +1,4 @@
-﻿
+
 namespace Hack_the_Burgh_competition
 {
     partial class Form1
