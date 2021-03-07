@@ -85,24 +85,6 @@ namespace Hack_the_Burgh_competition
                     return null;
             }
 
-            string[] dateArray1 = date.Split('-');
-            int year1 = int.Parse(dateArray1[0]);
-            int month1 = int.Parse(dateArray1[1]);
-            int day1 = int.Parse(dateArray1[2]);
-            DateTime actualDate = new DateTime(year1, month1, day1);
-
-            string[] dateArray2 = this.portfolio.getCurrentDate().Split('-');
-            int year2 = int.Parse(dateArray2[0]);
-            int month2 = int.Parse(dateArray2[1]);
-            int day2 = int.Parse(dateArray2[2]);
-            DateTime currentDate = new DateTime(year2, month2, day2);
-            DateTime tenBehind = actualDate.AddDays(10);
-
-            if (currentDate > tenBehind)
-            {
-                date = currentDate.Year.ToString() + '-' + currentDate.Month.ToString() + '-' + currentDate.Day.ToString();
-            }
-
             switch (mode)
             {
                 case "Days":
@@ -184,6 +166,7 @@ namespace Hack_the_Burgh_competition
             if (this.portfolio == null)
             {
                 return false;
+                Console.WriteLine("No Portfolio");
             }
 
             string[] stringDate = this.portfolio.getCurrentDate().Split('-');
@@ -191,23 +174,24 @@ namespace Hack_the_Burgh_competition
             int month = int.Parse(stringDate[1]);
             int day = int.Parse(stringDate[2]);
             DateTime date = new DateTime(year, month, day);
+            DateTime newDate = date;
 
             switch (type)
             {
-                case "days":
-                    date.AddDays(amount);
+                case "Days":
+                    newDate = date.AddDays(amount);
                     break;
-                case "months":
-                    date.AddMonths(amount);
+                case "Months":
+                    newDate = date.AddMonths(amount);
                     break;
-                case "years":
-                    date.AddYears(amount);
+                case "Years":
+                    newDate = date.AddYears(amount);
                     break;
                 default:
                     return false;
             }
 
-            string dateRepr = date.Year.ToString() + '-' + date.Month.ToString() + '-' + date.Day.ToString();
+            string dateRepr = newDate.Year.ToString() + '-' + newDate.Month.ToString().PadLeft(2, '0') + '-' + newDate.Day.ToString().PadLeft(2, '0');
             this.portfolio.update(dateRepr, this.db.price(this.portfolio.getType(), dateRepr));
 
             return true;

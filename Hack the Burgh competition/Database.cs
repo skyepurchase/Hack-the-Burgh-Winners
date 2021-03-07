@@ -25,7 +25,6 @@ namespace Hack_the_Burgh_competition
                         closeStocks.Add(type, new Dictionary<string, string>());
                     }
                     closeStocks[type].Add(rowData[0], rowData[1]);  // For this specific stock add the price related to this date
-                    Console.WriteLine(type + ':' + rowData[0]);
                 }
                 for (int i = 1; i < csvLinesOpen.Length; i++)
                 {
@@ -45,12 +44,10 @@ namespace Hack_the_Burgh_competition
 
             Dictionary<string, string> result = new Dictionary<string, string>();  // The link between dates and prices
 
-            Console.WriteLine(type);
             for (int i = 0; i < days; i++)
             {
                 date = date.AddDays(1); // Get the next day
                 string stringDate = date.Year.ToString() + '-' + date.Month.ToString().PadLeft(2, '0') + '-' + date.Day.ToString().PadLeft(2, '0');
-                Console.WriteLine(stringDate);
 
                 string key = date.Day.ToString(); // This is just for visual purposes
 
