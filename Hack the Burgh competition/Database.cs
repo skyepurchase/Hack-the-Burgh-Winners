@@ -120,7 +120,14 @@ namespace Hack_the_Burgh_competition
         {
             DateTime date = this.ParseDate(startDate);
 
-            return float.Parse(this.closeStocks[type][date]); // Prices are floats the value in £
+            if (this.closeStocks[type].ContainsKey(date))
+                {
+                return float.Parse(this.closeStocks[type][date]); // Prices are floats the value in £
+            }
+            else
+                {
+            return 0f;
+                    }
         }
 
         public void buy(string type, string startDate, int number)
