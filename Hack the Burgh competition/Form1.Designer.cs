@@ -67,7 +67,7 @@ namespace Hack_the_Burgh_competition
             this.label3 = new System.Windows.Forms.Label();
             this.pnlChallenge1 = new System.Windows.Forms.Panel();
             this.btnTimeSkip = new System.Windows.Forms.Button();
-            this.txtTimeUnits = new System.Windows.Forms.ComboBox();
+            this.cbTimeUnits = new System.Windows.Forms.ComboBox();
             this.txtTimeVal = new System.Windows.Forms.TextBox();
             this.lblChallengeStats = new System.Windows.Forms.Label();
             this.cbYear = new System.Windows.Forms.ComboBox();
@@ -464,7 +464,7 @@ namespace Hack_the_Burgh_competition
             // pnlChallenge1
             // 
             this.pnlChallenge1.Controls.Add(this.btnTimeSkip);
-            this.pnlChallenge1.Controls.Add(this.txtTimeUnits);
+            this.pnlChallenge1.Controls.Add(this.cbTimeUnits);
             this.pnlChallenge1.Controls.Add(this.txtTimeVal);
             this.pnlChallenge1.Controls.Add(this.lblChallengeStats);
             this.pnlChallenge1.Controls.Add(this.cbYear);
@@ -496,19 +496,19 @@ namespace Hack_the_Burgh_competition
             this.btnTimeSkip.UseVisualStyleBackColor = true;
             this.btnTimeSkip.Click += new System.EventHandler(this.btnTimeSkip_Click);
             // 
-            // txtTimeUnits
+            // cbTimeUnits
             // 
-            this.txtTimeUnits.FormattingEnabled = true;
-            this.txtTimeUnits.Items.AddRange(new object[] {
+            this.cbTimeUnits.FormattingEnabled = true;
+            this.cbTimeUnits.Items.AddRange(new object[] {
             "Days",
             "Months",
             "Years"});
-            this.txtTimeUnits.Location = new System.Drawing.Point(663, 602);
-            this.txtTimeUnits.MaxDropDownItems = 3;
-            this.txtTimeUnits.Name = "txtTimeUnits";
-            this.txtTimeUnits.Size = new System.Drawing.Size(118, 33);
-            this.txtTimeUnits.TabIndex = 15;
-            this.txtTimeUnits.Text = "Choose";
+            this.cbTimeUnits.Location = new System.Drawing.Point(663, 602);
+            this.cbTimeUnits.MaxDropDownItems = 3;
+            this.cbTimeUnits.Name = "cbTimeUnits";
+            this.cbTimeUnits.Size = new System.Drawing.Size(118, 33);
+            this.cbTimeUnits.TabIndex = 15;
+            this.cbTimeUnits.Text = "Choose";
             // 
             // txtTimeVal
             // 
@@ -854,7 +854,7 @@ namespace Hack_the_Burgh_competition
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label lblChallengeStats;
         private System.Windows.Forms.Button btnTimeSkip;
-        private System.Windows.Forms.ComboBox txtTimeUnits;
+        private System.Windows.Forms.ComboBox cbTimeUnits;
         private System.Windows.Forms.TextBox txtTimeVal;
         private System.Windows.Forms.Button btnAssetManagement;
         private System.Windows.Forms.Label lblInfo;

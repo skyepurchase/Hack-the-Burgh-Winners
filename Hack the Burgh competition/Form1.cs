@@ -20,6 +20,7 @@ namespace Hack_the_Burgh_competition
             InitializeComponent();
         }
 
+        // Utility functions
         private void ChangePanel(Panel old, Panel next)
         {
             // makes current panel invisible and changes to a new one
@@ -28,115 +29,6 @@ namespace Hack_the_Burgh_competition
             next.BringToFront();
             listPanel.Add(next);
 
-        }
-        private void btnStats_Click(object sender, EventArgs e)
-        {
-            ChangePanel(pnlMenu, pnlInformation);
-
-            lblInfoTitle.Text = btnStats.Text;
-            lblInfo.Text = readfile("Player information", "Portfolio.txt");
-
-        }
-
-        private void btnStart_Click(object sender, EventArgs e)
-        {
-            ChangePanel(pnlMenu, panel2);
-        }
-
-        private void btnSettings_Click(object sender, EventArgs e)
-        {
-            ChangePanel(pnlMenu, pnlSettings);
-        }
-
-        private void btnQuit_Click(object sender, EventArgs e)
-        {
-            System.Windows.Forms.Application.Exit();
-        }
-
-        private void btnBack_Click(object sender, EventArgs e)
-        {
-            if (listPanel.Count > 1)
-            {
-                Panel curr = listPanel[listPanel.Count - 1];
-                curr.Visible = false;
-                listPanel.RemoveAt(listPanel.Count - 1);
-
-                Panel prev = listPanel[listPanel.Count - 1];
-                prev.Visible = true;
-            }
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            listPanel.Add(pnlMenu);
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            ChangePanel(panel2, pnlTraining);
-        }
-
-
-        private void btnIntroduction_Click(object sender, EventArgs e)
-        {
-            ChangePanel(pnlTraining, pnlInformation);
-
-            lblInfoTitle.Text = btnIntroduction.Text;
-            lblInfo.Text = readfile("Training information", "Introduction.txt");
-        }
-
-        private void btnFinancialInstruments_Click(object sender, EventArgs e)
-        {
-            ChangePanel(pnlTraining, pnlInformation);
-
-            lblInfoTitle.Text = btnFinancialInstruments.Text;
-            lblInfo.Text = readfile("Training information", "Financial Instruments.txt");
-        }
-
-        private void btnCompoundInterest_Click(object sender, EventArgs e)
-        {
-            ChangePanel(pnlTraining, pnlInformation);
-
-            lblInfoTitle.Text = btnCompoundInterest.Text;
-            lblInfo.Text = readfile("Training information", "Compound Interest.txt");
-        }
-
-        private void btnAssetManagement_Click(object sender, EventArgs e)
-        {
-            ChangePanel(pnlTraining, pnlInformation);
-
-            lblInfoTitle.Text = btnCompoundInterest.Text;
-            lblInfo.Text = readfile("Training information", "Asset Management.txt");
-        }
-
-        private void btnChallenges_Click(object sender, EventArgs e)
-        {
-            ChangePanel(panel2, pnlChallenges);
-            List<string> challengeNames = getChallengesNames();
-            string currChallenge = getCurrentChallenge();
-            List<Button> buttons = getChallengeButtons();
-
-            // if no challenge started, only enable the first one
-            if (currChallenge == "None")
-            {
-                foreach (Button button in buttons) button.Enabled = false;
-                buttons[0].Enabled = true;
-            }
-            // if a challenge started, enable that challenge and all the previous ones
-            else
-            {
-                for (int i = 0; i < buttons.Count; i++)
-                {
-                    if (i <= challengeNames.IndexOf(currChallenge))
-                    {
-                        buttons[i].Enabled = true;
-                    }
-                    else
-                    {
-                        buttons[i].Enabled = false;
-                    }
-                }
-            }
         }
 
         private List<Button> getChallengeButtons()
@@ -180,14 +72,9 @@ namespace Hack_the_Burgh_competition
         
         private string readfile(string dirName, string fileName)
         {
-            // reads the file of the given name, which will contain information for the chosen topic
-
+            // reads the file of the given name if present in cwd and outputs as string
             string cwd = Directory.GetCurrentDirectory();
             string path = cwd + '\\' + dirName + '\\' + fileName;
-            /*// moves cwd back 2 spaces (to access the folder where the files are kept)
-            List<string> filedir = cwd.Split('\\').ToList();
-            filedir.RemoveRange(filedir.Count - 2, 2);
-            string path = String.Join("\\", filedir.ToArray()) + '\\' + dirName + '\\' + fileName;*/
 
             string information = "";
             if (!File.Exists(@path))
@@ -199,32 +86,142 @@ namespace Hack_the_Burgh_competition
                 information = File.ReadAllText(@path);
             }
             return information;
-        } ///
+        }
+
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            if (listPanel.Count > 1)  // if not in starting page
+            {
+                Panel curr = listPanel[listPanel.Count - 1];  // make current page invisible and remove it from list
+                curr.Visible = false;
+                listPanel.RemoveAt(listPanel.Count - 1);
+
+                Panel prev = listPanel[listPanel.Count - 1];  // move to last page in list
+                prev.Visible = true;
+            }
+        }
+
+        private string makeTwoDigit(int i)
+        {
+            string rv;
+            if (i < 10)
+            {
+                rv = String.Concat('0', char.Parse(i.ToString()));
+            }
+            else
+            {
+                rv = i.ToString();
+            }
+            return rv;
+        }
+
+        
+        // Main menu page
+        private void btnStats_Click(object sender, EventArgs e)
+        {
+            ChangePanel(pnlMenu, pnlInformation);
+
+            lblInfoTitle.Text = btnStats.Text;
+            lblInfo.Text = readfile("Player information", "Portfolio.txt");
+
+        }
+
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            ChangePanel(pnlMenu, panel2);
+        }
+
+        private void btnSettings_Click(object sender, EventArgs e)
+        {
+            ChangePanel(pnlMenu, pnlSettings);
+        }
+
+        private void btnQuit_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.Application.Exit();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            listPanel.Add(pnlMenu);
+        }
+
+        // Start page
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ChangePanel(panel2, pnlTraining);
+        }
+
+        private void btnChallenges_Click(object sender, EventArgs e)
+        {
+            ChangePanel(panel2, pnlChallenges);
+            List<string> challengeNames = getChallengesNames();
+            string currChallenge = getCurrentChallenge();
+            List<Button> buttons = getChallengeButtons();
+
+            // if no challenge started, only enable the first one
+            if (currChallenge == "None")
+            {
+                foreach (Button button in buttons) button.Enabled = false;
+                buttons[0].Enabled = true;
+            }
+            // if a challenge started, enable that challenge and all the previous ones
+            else
+            {
+                for (int i = 0; i < buttons.Count; i++)
+                {
+                    if (i <= challengeNames.IndexOf(currChallenge))
+                    {
+                        buttons[i].Enabled = true;
+                    }
+                    else
+                    {
+                        buttons[i].Enabled = false;
+                    }
+                }
+            }
+        }
+
+        // Training page
+        private void btnIntroduction_Click(object sender, EventArgs e)
+        {
+            ChangePanel(pnlTraining, pnlInformation);
+
+            lblInfoTitle.Text = btnIntroduction.Text;
+            lblInfo.Text = readfile("Training information", "Introduction.txt");
+        }
+
+        private void btnFinancialInstruments_Click(object sender, EventArgs e)
+        {
+            ChangePanel(pnlTraining, pnlInformation);
+
+            lblInfoTitle.Text = btnFinancialInstruments.Text;
+            lblInfo.Text = readfile("Training information", "Financial Instruments.txt");
+        }
+
+        private void btnCompoundInterest_Click(object sender, EventArgs e)
+        {
+            ChangePanel(pnlTraining, pnlInformation);
+
+            lblInfoTitle.Text = btnCompoundInterest.Text;
+            lblInfo.Text = readfile("Training information", "Compound Interest.txt");
+        }
+
+        private void btnAssetManagement_Click(object sender, EventArgs e)
+        {
+            ChangePanel(pnlTraining, pnlInformation);
+
+            lblInfoTitle.Text = btnCompoundInterest.Text;
+            lblInfo.Text = readfile("Training information", "Asset Management.txt");
+        }
 
         private void pnlInformation_VisibleChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void LoadData()
-        {
-            string mode = cbViewingMode.SelectedItem.ToString();
-            string[] date = new string[] { 
-                cbYear.SelectedItem.ToString(),
-                cbMonth.SelectedItem.ToString(),
-                cbDate.SelectedItem.ToString()
-            };
-
-            DataTable dt = model.MakeQuery(String.Join("-", date), mode);
-
-            chart1.DataSource = dt;
-            chart1.Series["Open"].XValueMember = "X_Value";
-            chart1.Series["Close"].XValueMember = "X_Value";
-            chart1.Series["Open"].YValueMembers = "Y1_Value";
-            chart1.Series["Close"].YValueMembers = "Y2_Value";
-            chart1.ChartAreas[0].AxisY.LabelStyle.Format = "";
-        }
         
+        // Challenges page buttons
         private void btnChallenge1_Click(object sender, EventArgs e)
         {
             model.newChallenge("Challenge 1", "10", "Tech", 1000f, "2014-01-02");
@@ -268,21 +265,50 @@ namespace Hack_the_Burgh_competition
             }
         }
 
+        // functionality related to challenges
         private void btnBuy_Click(object sender, EventArgs e)
         {
-            
+            model.buy(Int32.Parse(txtQuantity.Text));
+            lblChallengeStats.Text = readfile("Player information", "Portfolio.txt");
         }
 
         private void btnSell_Click(object sender, EventArgs e)
         {
-
+            model.sell(Int32.Parse(txtQuantity.Text));
+            lblChallengeStats.Text = readfile("Player information", "Portfolio.txt");
         }
 
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            LoadData();
+        }
+
+        private void LoadData()
+        {
+            string mode = cbViewingMode.SelectedItem.ToString();
+            string[] date = new string[] { 
+                cbYear.SelectedItem.ToString(),
+                cbMonth.SelectedItem.ToString(),
+                cbDate.SelectedItem.ToString()
+            };
+
+            DataTable dt = model.MakeQuery(String.Join("-", date), mode);
+
+            chart1.DataSource = dt;
+            chart1.Series["Open"].XValueMember = "X_Value";
+            chart1.Series["Close"].XValueMember = "X_Value";
+            chart1.Series["Open"].YValueMembers = "Y1_Value";
+            chart1.Series["Close"].YValueMembers = "Y2_Value";
+            chart1.ChartAreas[0].AxisY.LabelStyle.Format = "";
+        }        
+        
         private void btnTimeSkip_Click(object sender, EventArgs e)
         {
-
+            model.timeStep(cbTimeUnits.SelectedItem.ToString() ,Int32.Parse(txtTimeVal.Text));
+            lblChallengeStats.Text = readfile("Player information", "Portfolio.txt");
         }
 
+        
         private void txtQuantity_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (char.IsDigit(e.KeyChar))
@@ -365,11 +391,8 @@ namespace Hack_the_Burgh_competition
             txtTimeVal.SelectionLength = 0;
         }
 
-        private void btnLoad_Click(object sender, EventArgs e)
-        {
-            LoadData();
-        }
 
+        // Makes sure that they can't select dates beyond their 'present' date
         private void cbViewingMode_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbViewingMode.SelectedItem.ToString() == "Years")
@@ -468,20 +491,6 @@ namespace Hack_the_Burgh_competition
                     else if (Int32.Parse(curDate) < i && cbDate.Items.Contains(item)) cbDate.Items.Remove(item);
                 }
             }
-        }
-
-        private string makeTwoDigit(int i)
-        {
-            string rv;
-            if (i < 10)
-            {
-                rv = String.Concat('0', char.Parse(i.ToString()));
-            }
-            else
-            {
-                rv = i.ToString();
-            }
-            return rv;
         }
 
         private void cbDate_SelectedIndexChanged(object sender, EventArgs e)
