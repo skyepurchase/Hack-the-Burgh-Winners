@@ -279,9 +279,14 @@ namespace Hack_the_Burgh_competition
 
         private void update(string date)
         {
+            string cwd = Directory.GetCurrentDirectory();
+            List<string> filedir = cwd.Split('\\').ToList();
+            filedir.RemoveRange(filedir.Count - 2, 2);
+            string filename = String.Join("\\", filedir.ToArray()) + '\\' + "Player information" + '\\' + "Portfolio.txt";
+
             this.date = date;
             string display = $"Challenge name: {this.name}\n\nPresent Date: {date}\n\nGoal: {this.goal}\n\nCurrently owned stock quantity: {this.quantity}\n\nCurrent stock price: {this.price}\n\nAvailable money: £{this.money}\n\nTotal profit: £{this.profit}";
-            File.WriteAllText(@"Player information\Portfolio.txt", display);
+            File.WriteAllText(filename, display);
         }
 
         public void buy(float price, int amount)

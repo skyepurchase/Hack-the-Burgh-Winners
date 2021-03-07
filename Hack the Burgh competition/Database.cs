@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Hack_the_Burgh_competition
 {
@@ -14,8 +15,14 @@ namespace Hack_the_Burgh_competition
         {
             foreach (string type in stockTypes)
             {
-                string[] csvLinesClose = File.ReadAllLines($"closestockdata{type}.csv");
-                string[] csvLinesOpen = File.ReadAllLines($"openstockdata{type}.csv");  // This is just the format of my python data collection files
+                string cwd = Directory.GetCurrentDirectory();
+                List<string> filedir = cwd.Split('\\').ToList();
+                filedir.RemoveRange(filedir.Count - 2, 2);
+                string csvLinesCloseFile = String.Join("\\", filedir.ToArray()) + '\\' + "Data" + '\\' + $"closestockdata{type}.csv";
+                string csvLinesOpenFile = String.Join("\\", filedir.ToArray()) + '\\' + "Data" + '\\' + $"openstockdata{type}.csv";
+
+                string[] csvLinesClose = File.ReadAllLines(csvLinesCloseFile);
+                string[] csvLinesOpen = File.ReadAllLines(csvLinesOpenFile);  // This is just the format of my python data collection files
 
                 for (int i = 1; i < csvLinesClose.Length; i++)
                 {

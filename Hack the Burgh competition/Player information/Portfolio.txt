@@ -1,0 +1,13 @@
+Challenge name: Challenge 1
+
+Present Date: 2014-01-02
+
+Goal: 10
+
+Currently owned stock quantity: 0
+
+Current stock price: 0
+
+Available money: £1000
+
+Total profit: £0
