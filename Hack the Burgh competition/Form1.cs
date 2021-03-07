@@ -14,6 +14,7 @@ namespace Hack_the_Burgh_competition
     public partial class Form1 : Form
     {
         List<Panel> listPanel = new List<Panel>(); // stores previous pages
+        Model model = new Model();
         public Form1()
         {
             InitializeComponent();
@@ -76,28 +77,36 @@ namespace Hack_the_Burgh_competition
         }
 
 
-        private void btnTerminologies_Click(object sender, EventArgs e)
+        private void btnIntroduction_Click(object sender, EventArgs e)
         {
             ChangePanel(pnlTraining, pnlInformation);
 
-            lblInfoTitle.Text = btnTerminologies.Text;
-            lblInfo.Text = readfile("Training information", "Sample.txt");
+            lblInfoTitle.Text = btnIntroduction.Text;
+            lblInfo.Text = readfile("Training information", "Introduction.txt");
         }
 
-        private void btnConcept1_Click(object sender, EventArgs e)
+        private void btnFinancialInstruments_Click(object sender, EventArgs e)
         {
             ChangePanel(pnlTraining, pnlInformation);
 
-            lblInfoTitle.Text = btnConcept1.Text;
-            lblInfo.Text = readfile("Training information", "Concept 1.txt");
+            lblInfoTitle.Text = btnFinancialInstruments.Text;
+            lblInfo.Text = readfile("Training information", "Financial Instruments.txt");
         }
 
-        private void btnConcept2_Click(object sender, EventArgs e)
+        private void btnCompoundInterest_Click(object sender, EventArgs e)
         {
             ChangePanel(pnlTraining, pnlInformation);
 
-            lblInfoTitle.Text = btnConcept2.Text;
-            lblInfo.Text = readfile("Training information", "Concept 2.txt");
+            lblInfoTitle.Text = btnCompoundInterest.Text;
+            lblInfo.Text = readfile("Training information", "Compound Interest.txt");
+        }
+
+        private void btnAssetManagement_Click(object sender, EventArgs e)
+        {
+            ChangePanel(pnlTraining, pnlInformation);
+
+            lblInfoTitle.Text = btnCompoundInterest.Text;
+            lblInfo.Text = readfile("Training information", "Asset Management.txt");
         }
 
         private void btnChallenges_Click(object sender, EventArgs e)
@@ -157,15 +166,28 @@ namespace Hack_the_Burgh_competition
             return name;
         }
 
+        private List<string> getChallengesNames()
+        {
+            // gets names of the different challenges using the text used in the challenge buttons
+            List<string> challengeNames = new List<string>();
+            challengeNames.Add(btnChallenge1.Text);
+            challengeNames.Add(btnChallenge2.Text);
+            challengeNames.Add(btnChallenge3.Text);
+            challengeNames.Add(btnChallenge4.Text);
+            challengeNames.Add(btnChallenge5.Text);
+            return challengeNames;
+        }
+        
         private string readfile(string dirName, string fileName)
         {
             // reads the file of the given name, which will contain information for the chosen topic
 
             string cwd = Directory.GetCurrentDirectory();
-            // moves cwd back 2 spaces (to access the folder where the files are kept)
+            string path = cwd + '\\' + dirName + '\\' + fileName;
+            /*// moves cwd back 2 spaces (to access the folder where the files are kept)
             List<string> filedir = cwd.Split('\\').ToList();
             filedir.RemoveRange(filedir.Count - 2, 2);
-            string path = String.Join("\\", filedir.ToArray()) + '\\' + dirName + '\\' + fileName;
+            string path = String.Join("\\", filedir.ToArray()) + '\\' + dirName + '\\' + fileName;*/
 
             string information = "";
             if (!File.Exists(@path))
@@ -186,60 +208,50 @@ namespace Hack_the_Burgh_competition
 
         private void LoadData()
         {
-            //if (makeQuery("challenge", "yyyy-dd-mm", "Viewing mode") == "success")
-            //{
-                // file path
-                string cwd = Directory.GetCurrentDirectory();
-                // moves cwd back 2 spaces (to access the folder where the files are kept)
-                List<string> filedir = cwd.Split('\\').ToList();
-                filedir.RemoveRange(filedir.Count - 2, 2);
-                string path = String.Join("\\", filedir.ToArray()) + '\\' + "Data" + '\\' + "Queried Data.txt";
+            string mode = cbViewingMode.SelectedItem.ToString();
+            string[] date = new string[] { 
+                cbYear.SelectedItem.ToString(),
+                "02",
+                cbDate.SelectedItem.ToString()
+            };
+            DataTable dt = model.MakeQuery(String.Join("-", date), mode);
 
-
-                DataTable dt = new DataTable();
-                dt.Columns.Add("X_Value", typeof(double));
-                dt.Columns.Add("Y_Value", typeof(double));
-
-                StreamReader sr = new StreamReader(@path);
-                string line;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    string[] strarr = line.Split(',');
-                    dt.Rows.Add(strarr[0], strarr[1]);
-                }
-                chart1.DataSource = dt;
-                chart1.Series["Series1"].XValueMember = "X_Value";
-                chart1.Series["Series1"].YValueMembers = "Y_Value";
-                //chart1.Series["Series1"].ChartType = SeriesChartType.Line;
-                chart1.ChartAreas[0].AxisY.LabelStyle.Format = "";
-                if (sr != null) sr.Close();
-            //}
-            
+            chart1.DataSource = dt;
+            chart1.Series["Open"].XValueMember = "X_Value";
+            chart1.Series["Close"].XValueMember = "X_Value";
+            chart1.Series["Open"].YValueMembers = "Y1_Value";
+            chart1.Series["Close"].YValueMembers = "Y2_Value";
+            chart1.ChartAreas[0].AxisY.LabelStyle.Format = "";
         }
         
         private void btnChallenge1_Click(object sender, EventArgs e)
         {
+            model.newChallenge("Challenge 1", "10", "Tech", 1000f, "2014-01-02");
             ChangePanel(pnlChallenges, pnlChallenge1);
             lblChallengeStats.Text = readfile("Player information", "Portfolio.txt");
         }
 
         private void btnChallenge2_Click(object sender, EventArgs e)
         {
+            model.newChallenge("Challenge 2", "100", "Gold", 1000f, "2014-02-02");
             ChangePanel(pnlChallenges, pnlChallenge1);
         }
 
         private void btnChallenge3_Click(object sender, EventArgs e)
         {
+            model.newChallenge("Challenge 3", "1000", "Travel", 1000f, "2014-03-02");
             ChangePanel(pnlChallenges, pnlChallenge1);
         }
 
         private void btnChallenge4_Click(object sender, EventArgs e)
         {
+            model.newChallenge("Challenge 4", "2000", "Oil", 1000f, "2014-04-02");
             ChangePanel(pnlChallenges, pnlChallenge1);
         }
 
         private void btnChallenge5_Click(object sender, EventArgs e)
         {
+            model.newChallenge("Challenge 5", "10000", "Entertainment", 1000f, "2014-05-02");
             ChangePanel(pnlChallenges, pnlChallenge1);
         }
 
@@ -248,6 +260,29 @@ namespace Hack_the_Burgh_competition
             if (pnlChallenge1.Visible)
             {
                 lblChallengeStats.Text = readfile("Player information", "Portfolio.txt");
+
+                string date = model.getDate();
+
+                string yr = date.Split('-')[0];
+                string lastyr = cbYear.Items[cbYear.Items.Count - 1].ToString();
+                while (Int32.Parse(yr) > Int32.Parse(lastyr))
+                {
+                    cbYear.Items.Add(Int32.Parse(lastyr) + 1);
+                    lastyr = cbYear.Items[cbYear.Items.Count - 1].ToString();
+                }
+
+                /*string day = date.Split('-')[2];
+                string lastday = cbDate.Items[cbMonth.Items.Count - 1].ToString();
+                while (Int32.Parse(day) > Int32.Parse(lastday))
+                {
+                    cbDate.Items.Add(Int32.Parse(lastyr) + 1);
+                    lastday = cbDate.Items[cbDate.Items.Count - 1].ToString();
+                }
+                while (Int32.Parse(day) < Int32.Parse(lastday))
+                {
+                    cbDate.Items.Add(Int32.Parse(lastyr));
+                    lastday = (string)cbDate.Items[cbDate.Items.Count - 1];
+                }*/
             }
         }
 
@@ -340,26 +375,97 @@ namespace Hack_the_Burgh_competition
 
         private void cbViewingMode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cbViewingMode.SelectedItem.ToString() == "Year view")
+            if (cbViewingMode.SelectedItem.ToString() == "Years")
             {
                 cbYear.Enabled = true;
                 cbMonth.Enabled = false;
                 cbDate.Enabled = false;
             }
 
-            if (cbViewingMode.SelectedItem.ToString() == "Month view")
+            if (cbViewingMode.SelectedItem.ToString() == "Months")
             {
                 cbYear.Enabled = true;
                 cbMonth.Enabled = false;
                 cbDate.Enabled = false;
             }
 
-            if (cbViewingMode.SelectedItem.ToString() == "Day view")
+            if (cbViewingMode.SelectedItem.ToString() == "Days")
             {
                 cbYear.Enabled = true;
                 cbMonth.Enabled = true;
                 cbDate.Enabled = true;
             }
+
+        }
+
+        private void cbYear_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+            
+        }
+
+        private void cbMonth_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string date = "2000-June-12";
+
+            string curYear = date.Split('-')[0];
+            string curMonth = date.Split('-')[1];
+            string curDate = date.Split('-')[2];
+            string selectedYear = cbYear.SelectedItem.ToString();
+            List<string> months = new List<string>(new String[] {"January", "February", "March", "April", "May", "June", "July",
+                "August", "September", "October", "November", "December" });
+
+            if (Int32.Parse(selectedYear) < Int32.Parse(curYear))
+            {
+                foreach (string month in months)
+                {
+                    if (!cbMonth.Items.Contains(month)) cbMonth.Items.Add(month);
+                }
+            }
+
+            else
+            {
+                foreach (string month in months)
+                {
+                    if (months.IndexOf(curMonth) < months.IndexOf(month)) cbMonth.Items.Remove(month);
+                }
+            }
+        }
+
+        private void cbDate_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string date = "2000-June-12";
+
+            string curYear = date.Split('-')[0];
+            string curMonth = date.Split('-')[1];
+            string selectedYear = cbYear.SelectedItem.ToString();
+            List<string> months = new List<string>(new String[] {"January", "February", "March", "April", "May", "June", "July",
+                "August", "September", "October", "November", "December" });
+
+            if (Int32.Parse(selectedYear) < Int32.Parse(curYear))
+            {
+                for (int i = 1; i < 31; i++)
+                {
+                    if (!cbDate.Items.Contains(i)) cbDate.Items.Add(i);
+                }
+            }
+
+            else if (Int32.Parse(selectedYear) == Int32.Parse(curYear) && true)
+            {
+                foreach (string month in months)
+                {
+                    if (months.IndexOf(curMonth) < months.IndexOf(month)) cbMonth.Items.Remove(month);
+                }
+            }
+        }
+
+
+        /*
+        Tasks:
+        Link the training datas to the text files provided by karthik
+        Create a time skip button
+        Make the drop down lists show values using the current date
+        */
 
     }
 }
