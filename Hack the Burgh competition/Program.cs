@@ -85,7 +85,7 @@ namespace Hack_the_Burgh_competition
                     return null;
             }
 
-            string[] dateArray1 = date.Split(',');
+            string[] dateArray1 = date.Split('-');
             int year1 = int.Parse(dateArray1[0]);
             int month1 = int.Parse(dateArray1[1]);
             int day1 = int.Parse(dateArray1[2]);
@@ -96,22 +96,22 @@ namespace Hack_the_Burgh_competition
             int month2 = int.Parse(dateArray2[1]);
             int day2 = int.Parse(dateArray2[2]);
             DateTime currentDate = new DateTime(year2, month2, day2);
-            DateTime tenBehind = currentDate.AddDays(10);
+            DateTime tenBehind = actualDate.AddDays(10);
 
-            if (actualDate > tenBehind)
+            if (currentDate > tenBehind)
             {
-                date = currentDate.Year.ToString() + ',' + currentDate.Month.ToString() + ',' + currentDate.Day.ToString();
+                date = currentDate.Year.ToString() + '-' + currentDate.Month.ToString() + '-' + currentDate.Day.ToString();
             }
 
             switch (mode)
             {
-                case "days":
+                case "Days":
                     data = db.getConsecutiveDays(this.portfolio.getType(), date, 10);
                     break;
-                case "months":
+                case "Months":
                     data = db.getConsecutiveMonths(this.portfolio.getType(), date, 12);
                     break;
-                case "years":
+                case "Years":
                     data = db.getConsecutiveYears(this.portfolio.getType(), date, 10);
                     break;
                 default:
@@ -125,14 +125,18 @@ namespace Hack_the_Burgh_competition
                 dt.Columns.Add("Y1_Value", typeof(double));
                 dt.Columns.Add("Y2_Value", typeof(double));
 
+                MessageBox.Show(data.Count.ToString());
                 foreach (string x in data.Keys)
                 {
+                    MessageBox.Show(x);
+                    MessageBox.Show(data[x]);
                     string[] ypoints = data[x].Split(',');
-                    dt.Rows.Add(x, ypoints[0], ypoints[1]);
+                    dt.Rows.Add(x.ToString(), ypoints[0].ToString(), ypoints[1].ToString());
                 }
 
                 return dt;
             }
+
             return null;
         }
 

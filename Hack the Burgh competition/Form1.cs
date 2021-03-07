@@ -211,9 +211,10 @@ namespace Hack_the_Burgh_competition
             string mode = cbViewingMode.SelectedItem.ToString();
             string[] date = new string[] { 
                 cbYear.SelectedItem.ToString(),
-                "02",
+                cbMonth.SelectedItem.ToString(),
                 cbDate.SelectedItem.ToString()
             };
+
             DataTable dt = model.MakeQuery(String.Join("-", date), mode);
 
             chart1.DataSource = dt;
@@ -260,30 +261,26 @@ namespace Hack_the_Burgh_competition
             if (pnlChallenge1.Visible)
             {
                 lblChallengeStats.Text = readfile("Player information", "Portfolio.txt");
-
-                string date = model.getDate();
-
-                string yr = date.Split('-')[0];
-                string lastyr = cbYear.Items[cbYear.Items.Count - 1].ToString();
-                while (Int32.Parse(yr) > Int32.Parse(lastyr))
-                {
-                    cbYear.Items.Add(Int32.Parse(lastyr) + 1);
-                    lastyr = cbYear.Items[cbYear.Items.Count - 1].ToString();
-                }
-
-                /*string day = date.Split('-')[2];
-                string lastday = cbDate.Items[cbMonth.Items.Count - 1].ToString();
-                while (Int32.Parse(day) > Int32.Parse(lastday))
-                {
-                    cbDate.Items.Add(Int32.Parse(lastyr) + 1);
-                    lastday = cbDate.Items[cbDate.Items.Count - 1].ToString();
-                }
-                while (Int32.Parse(day) < Int32.Parse(lastday))
-                {
-                    cbDate.Items.Add(Int32.Parse(lastyr));
-                    lastday = (string)cbDate.Items[cbDate.Items.Count - 1];
-                }*/
+                cbViewingMode.SelectedItem = cbViewingMode.Items[0];
+                cbYear.SelectedItem = cbYear.Items[0];
+                cbDate.SelectedItem = cbDate.Items[0];
+                cbMonth.SelectedItem = cbMonth.Items[0];
             }
+        }
+
+        private void btnBuy_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void btnSell_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnTimeSkip_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void txtQuantity_KeyPress(object sender, KeyPressEventArgs e)
@@ -396,21 +393,23 @@ namespace Hack_the_Burgh_competition
                 cbDate.Enabled = true;
             }
 
+            string date = model.getDate();
+            string yr = date.Split('-')[0];
+            string lastyr = cbYear.Items[cbYear.Items.Count - 1].ToString();
+            while (Int32.Parse(yr) > Int32.Parse(lastyr))
+            {
+                cbYear.Items.Add(Int32.Parse(lastyr) + 1);
+                lastyr = cbYear.Items[cbYear.Items.Count - 1].ToString();
+            }
+
         }
 
         private void cbYear_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
-            
-        }
-
-        private void cbMonth_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string date = "2000-June-12";
+            string date = model.getDate();
 
             string curYear = date.Split('-')[0];
             string curMonth = date.Split('-')[1];
-            string curDate = date.Split('-')[2];
             string selectedYear = cbYear.SelectedItem.ToString();
             List<string> months = new List<string>(new String[] {"January", "February", "March", "April", "May", "June", "July",
                 "August", "September", "October", "November", "December" });
@@ -427,36 +426,67 @@ namespace Hack_the_Burgh_competition
             {
                 foreach (string month in months)
                 {
-                    if (months.IndexOf(curMonth) < months.IndexOf(month)) cbMonth.Items.Remove(month);
+                    if (months.IndexOf(curMonth) < months.IndexOf(month) && cbMonth.Items.Contains(month)) cbMonth.Items.Remove(month);
+                }
+            }
+            
+        }
+
+        private void cbMonth_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string date = model.getDate();
+
+            string curYear = date.Split('-')[0];
+            string curMonth = date.Split('-')[1];
+            string curDate = date.Split('-')[2];
+            string selectedYear = cbYear.SelectedItem.ToString();
+            string selectedMonth = cbMonth.SelectedItem.ToString();
+            List<string> months = new List<string>(new String[] {"January", "February", "March", "April", "May", "June", "July",
+                "August", "September", "October", "November", "December" });
+
+            if (Int32.Parse(selectedYear) < Int32.Parse(curYear) || (Int32.Parse(selectedYear) == Int32.Parse(curYear) && months.IndexOf(selectedMonth) < months.IndexOf(curMonth)))
+            {
+                for (int i = 1; i <= 31; i++)
+                {
+                    string item = makeTwoDigit(i);
+                    if (!cbDate.Items.Contains(item)) 
+                    {
+                        cbDate.Items.Add(item);
+                    }
+                }
+            }
+            
+            else 
+            {
+                for (int i = 1; i <= 31; i++)
+                {
+                    string item = makeTwoDigit(i);
+                    if (Int32.Parse(curDate) >= i && !cbDate.Items.Contains(item)) 
+                    {
+                        cbDate.Items.Add(item);
+                    }
+                    else if (Int32.Parse(curDate) < i && cbDate.Items.Contains(item)) cbDate.Items.Remove(item);
                 }
             }
         }
 
+        private string makeTwoDigit(int i)
+        {
+            string rv;
+            if (i < 10)
+            {
+                rv = String.Concat('0', char.Parse(i.ToString()));
+            }
+            else
+            {
+                rv = i.ToString();
+            }
+            return rv;
+        }
+
         private void cbDate_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string date = "2000-June-12";
 
-            string curYear = date.Split('-')[0];
-            string curMonth = date.Split('-')[1];
-            string selectedYear = cbYear.SelectedItem.ToString();
-            List<string> months = new List<string>(new String[] {"January", "February", "March", "April", "May", "June", "July",
-                "August", "September", "October", "November", "December" });
-
-            if (Int32.Parse(selectedYear) < Int32.Parse(curYear))
-            {
-                for (int i = 1; i < 31; i++)
-                {
-                    if (!cbDate.Items.Contains(i)) cbDate.Items.Add(i);
-                }
-            }
-
-            else if (Int32.Parse(selectedYear) == Int32.Parse(curYear) && true)
-            {
-                foreach (string month in months)
-                {
-                    if (months.IndexOf(curMonth) < months.IndexOf(month)) cbMonth.Items.Remove(month);
-                }
-            }
         }
 
 

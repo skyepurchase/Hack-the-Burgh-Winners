@@ -52,7 +52,7 @@ namespace Hack_the_Burgh_competition
             {
                 date = date.AddDays(1); // Get the next day
 
-                string key = date.Year.ToString() + '-' + date.Day.ToString() + '-' + date.Month.ToString(); // This is just for visual purposes
+                string key = date.Day.ToString(); // This is just for visual purposes
 
                 if (this.openStocks[type].ContainsKey(date) && this.closeStocks[type].ContainsKey(date)) // Only add if both open and closed have a value
                 {
@@ -60,7 +60,6 @@ namespace Hack_the_Burgh_competition
                                                                                                      // ALSO: need a comma after these values, VJ will probably explain
                 } 
             }
-
             return result;
         }
 
@@ -81,7 +80,7 @@ namespace Hack_the_Burgh_competition
 
                 DateTime openDate = date.AddMonths(-1).AddDays(1); // Get the start of the month
 
-                string key = date.Year.ToString() + '-' + date.Month.ToString(); // Don't care about days
+                string key = date.Month.ToString(); // Don't care about days
 
                 if (this.openStocks[type].ContainsKey(openDate) && this.closeStocks[type].ContainsKey(date))
                 {
