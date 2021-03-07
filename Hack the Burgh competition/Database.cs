@@ -40,7 +40,7 @@ namespace Hack_the_Burgh_competition
             }
         }
 
-        public Dictionary<string, string> GetConsecutiveDays(string type, string startDate, int days)
+        public Dictionary<string, string> getConsecutiveDays(string type, string startDate, int days)
         {
             string[] stringDate = startDate.Split('-');
             int year = int.Parse(stringDate[0]);
@@ -63,7 +63,7 @@ namespace Hack_the_Burgh_competition
             return result;
         }
 
-        public Dictionary<string, string> GetConsecutiveMonths(string type, string startDate, int months)
+        public Dictionary<string, string> getConsecutiveMonths(string type, string startDate, int months)
         {
             string[] stringDate = startDate.Split('-');
             int year = int.Parse(stringDate[0]);
@@ -86,7 +86,7 @@ namespace Hack_the_Burgh_competition
             return result;
         }
 
-        public Dictionary<string, string> GetConsecutiveYears(string type, string startDate, int days)
+        public Dictionary<string, string> getConsecutiveYears(string type, string startDate, int days)
         {
             string[] stringDate = startDate.Split('-');
             int year = int.Parse(stringDate[0]);
@@ -106,6 +106,53 @@ namespace Hack_the_Burgh_competition
             }
 
             return result;
+        }
+
+        public int price(string type, string startDate)
+        {
+            string[] stringDate = startDate.Split('-');
+            int year = int.Parse(stringDate[0]);
+            int day = int.Parse(stringDate[1]);
+            int month = int.Parse(stringDate[2]);
+            DateTime date = new DateTime(year, month, day);
+
+            return int.Parse(this.closeStocks[type][date]);
+        }
+
+        public void buy(string type, string startDate, int number)
+        {
+            string[] stringDate = startDate.Split('-');
+            int year = int.Parse(stringDate[0]);
+            int day = int.Parse(stringDate[1]);
+            int month = int.Parse(stringDate[2]);
+            DateTime date = new DateTime(year, month, day);
+
+            float currPrice = float.Parse(this.closeStocks[type][date]);
+            // Assume say 1000 people investing in the stock
+            float newPrice = currPrice * (1000 + number) / 1000;
+
+            this.closeStocks[type][date] = newPrice.ToString();
+        }
+
+        public float sell(string type, string startDate, int number)
+        {
+            string[] stringDate = startDate.Split('-');
+            int year = int.Parse(stringDate[0]);
+            int day = int.Parse(stringDate[1]);
+            int month = int.Parse(stringDate[2]);
+            DateTime date = new DateTime(year, month, day);
+
+            float currPrice = float.Parse(this.closeStocks[type][date]);
+            // Assume say 1000 people investing in the stock
+            float newPrice = currPrice * (1000 - number) / 1000;
+
+            this.closeStocks[type][date] = newPrice.ToString();
+            return currPrice * number;
+        }
+
+        public void update()
+        {
+            // I don't know if this is necessary
         }
     }
 }
