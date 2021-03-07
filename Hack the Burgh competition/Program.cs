@@ -40,16 +40,61 @@ namespace Hack_the_Burgh_competition
                 return null;
             }
 
+            string[] parts = startDate.Split('-');
+            string date = "";
+
+            switch (parts[1])
+            {
+                case "January":
+                    date = parts[0] + '-' + "01" + '-' + parts[2];
+                    break;
+                case "February":
+                    date = parts[0] + '-' + "02" + '-' + parts[2];
+                    break;
+                case "March":
+                    date = parts[0] + '-' + "03" + '-' + parts[2];
+                    break;
+                case "April":
+                    date = parts[0] + '-' + "04" + '-' + parts[2];
+                    break;
+                case "May":
+                    date = parts[0] + '-' + "05" + '-' + parts[2];
+                    break;
+                case "June":
+                    date = parts[0] + '-' + "06" + '-' + parts[2];
+                    break;
+                case "July":
+                    date = parts[0] + '-' + "07" + '-' + parts[2];
+                    break;
+                case "August":
+                    date = parts[0] + '-' + "08" + '-' + parts[2];
+                    break;
+                case "September":
+                    date = parts[0] + '-' + "09" + '-' + parts[2];
+                    break;
+                case "October":
+                    date = parts[0] + '-' + "10" + '-' + parts[2];
+                    break;
+                case "November":
+                    date = parts[0] + '-' + "11" + '-' + parts[2];
+                    break;
+                case "December":
+                    date = parts[0] + '-' + "12" + '-' + parts[2];
+                    break;
+                default:
+                    return null;
+            }
+
             switch (mode)
             {
                 case "days":
-                    data = db.getConsecutiveDays(this.portfolio.getType(), startDate, 10);
+                    data = db.getConsecutiveDays(this.portfolio.getType(), date, 10);
                     break;
                 case "months":
-                    data = db.getConsecutiveMonths(this.portfolio.getType(), startDate, 12);
+                    data = db.getConsecutiveMonths(this.portfolio.getType(), date, 12);
                     break;
                 case "years":
-                    data = db.getConsecutiveYears(this.portfolio.getType(), startDate, 10);
+                    data = db.getConsecutiveYears(this.portfolio.getType(), date, 10);
                     break;
                 default:
                     break;
@@ -151,7 +196,52 @@ namespace Hack_the_Burgh_competition
 
         public string getDate()
         {
-            return this.portfolio.getCurrentDate();
+            string date = this.portfolio.getCurrentDate();
+            string[] parts = date.Split('-');
+            string stringDate = "";
+
+            switch (parts[1])
+            {
+                case "01":
+                    stringDate = parts[0] + '-' + "January" + '-' + parts[2];
+                    return stringDate;
+                case "02":
+                    stringDate = parts[0] + '-' + "February" + '-' + parts[2];
+                    return stringDate;
+                case "03":
+                    stringDate = parts[0] + '-' + "March" + '-' + parts[2];
+                    return stringDate;
+                case "04":
+                    stringDate = parts[0] + '-' + "April" + '-' + parts[2];
+                    return stringDate;
+                case "05":
+                    stringDate = parts[0] + '-' + "May" + '-' + parts[2];
+                    return stringDate;
+                case "06":
+                    stringDate = parts[0] + '-' + "June" + '-' + parts[2];
+                    return stringDate;
+                case "07":
+                    stringDate = parts[0] + '-' + "July" + '-' + parts[2];
+                    return stringDate;
+                case "08":
+                    stringDate = parts[0] + '-' + "August" + '-' + parts[2];
+                    return stringDate;
+                case "09":
+                    stringDate = parts[0] + '-' + "September" + '-' + parts[2];
+                    return stringDate;
+                case "10":
+                    stringDate = parts[0] + '-' + "October" + '-' + parts[2];
+                    return stringDate;
+                case "11":
+                    stringDate = parts[0] + '-' + "November" + '-' + parts[2];
+                    return stringDate;
+                case "12":
+                    stringDate = parts[0] + '-' + "December" + '-' + parts[2];
+                    return stringDate;
+                default:
+                    return "xxxx-xx-xx";
+            }
+
         }
     }
 
