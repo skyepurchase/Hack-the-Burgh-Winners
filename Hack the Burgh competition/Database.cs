@@ -147,12 +147,6 @@ namespace Hack_the_Burgh_competition
             return currPrice * number; // Ignoring the fact that this might not actually be viable. That's a problem for actual development
         }
 
-        public void update()
-        {
-            // I don't know if this is necessary
-            // I automatically update when I method is called
-        }
-
         public DateTime ParseDate(string repr)
         {
             string[] stringDate = repr.Split('-');
