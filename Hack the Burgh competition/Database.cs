@@ -21,11 +21,7 @@ namespace Hack_the_Burgh_competition
                 {
                     string[] rowData = csvLinesClose[i].Split(','); // Get the date and price from .csv
 
-                    string[] stringDate = rowData[0].Split('-');
-                    int year = int.Parse(stringDate[0]);
-                    int day = int.Parse(stringDate[2]);
-                    int month = int.Parse(stringDate[1]);
-                    DateTime date = new DateTime(year, month, day);  // Incorrectly convert to DateTime (but I know it works so who cares)
+                    DateTime date = this.ParseDate(rowData[0]); 
 
                     if (!closeStocks.ContainsKey(type)) {
                         closeStocks.Add(type, new Dictionary<DateTime, string>());
@@ -36,11 +32,7 @@ namespace Hack_the_Burgh_competition
                 {
                     string[] rowData = csvLinesOpen[i].Split(','); // Same as above but the other file
 
-                    string[] stringDate = rowData[0].Split('-');
-                    int year = int.Parse(stringDate[0]);
-                    int day = int.Parse(stringDate[2]);
-                    int month = int.Parse(stringDate[1]);
-                    DateTime date = new DateTime(year, month, day);
+                    DateTime date = this.ParseDate(rowData[0]);
 
                     if (!openStocks.ContainsKey(type)) {
                         openStocks.Add(type, new Dictionary<DateTime, string>());
@@ -52,11 +44,7 @@ namespace Hack_the_Burgh_competition
 
         public Dictionary<string, string> getConsecutiveDays(string type, string startDate, int days)
         {
-            string[] stringDate = startDate.Split('-');
-            int year = int.Parse(stringDate[0]);
-            int day = int.Parse(stringDate[2]);
-            int month = int.Parse(stringDate[1]);
-            DateTime date = new DateTime(year, month, day); // Again convert to Datetime
+            DateTime date = this.ParseDate(startDate);
 
             Dictionary<string, string> result = new Dictionary<string, string>();  // The link between dates and prices
 
@@ -130,22 +118,14 @@ namespace Hack_the_Burgh_competition
 
         public float price(string type, string startDate) // To be used to judge whether a stock can actually be bought with funds
         {
-            string[] stringDate = startDate.Split('-');
-            int year = int.Parse(stringDate[0]);
-            int day = int.Parse(stringDate[2]);
-            int month = int.Parse(stringDate[1]);
-            DateTime date = new DateTime(year, month, day); // Usual datetime stuff
+            DateTime date = this.ParseDate(startDate);
 
             return float.Parse(this.closeStocks[type][date]); // Prices are floats the value in £
         }
 
         public void buy(string type, string startDate, int number)
         {
-            string[] stringDate = startDate.Split('-');
-            int year = int.Parse(stringDate[0]);
-            int day = int.Parse(stringDate[2]);
-            int month = int.Parse(stringDate[1]);
-            DateTime date = new DateTime(year, month, day); // This is getting boring to comment this block should probably create a function might do that tomorrow
+            DateTime date = this.ParseDate(startDate);
 
             float currPrice = float.Parse(this.closeStocks[type][date]);
             // Assume say 1000 people investing in the stock
@@ -156,11 +136,7 @@ namespace Hack_the_Burgh_competition
 
         public float sell(string type, string startDate, int number)
         {
-            string[] stringDate = startDate.Split('-');
-            int year = int.Parse(stringDate[0]);
-            int day = int.Parse(stringDate[2]);
-            int month = int.Parse(stringDate[1]);
-            DateTime date = new DateTime(year, month, day);  // Whelp last one
+            DateTime date = this.ParseDate(startDate);
 
             float currPrice = float.Parse(this.closeStocks[type][date]);
             // Assume say 1000 people investing in the stock
@@ -175,6 +151,15 @@ namespace Hack_the_Burgh_competition
         {
             // I don't know if this is necessary
             // I automatically update when I method is called
+        }
+
+        public DateTime ParseDate(string repr)
+        {
+            string[] stringDate = repr.Split('-');
+            int year = int.Parse(stringDate[0]);
+            int month = int.Parse(stringDate[1]);
+            int day = int.Parse(stringDate[2]);
+            return new DateTime(year, month, day); // Sperate function to make a dateTime in a way I'm comfortable with, will eventually switch to built in
         }
     }
 }
