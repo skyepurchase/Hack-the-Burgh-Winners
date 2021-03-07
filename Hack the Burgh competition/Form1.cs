@@ -72,9 +72,11 @@ namespace Hack_the_Burgh_competition
         
         private string readfile(string dirName, string fileName)
         {
-            // reads the file of the given name if present in cwd and outputs as string
             string cwd = Directory.GetCurrentDirectory();
-            string path = cwd + '\\' + dirName + '\\' + fileName;
+            // moves cwd back 2 spaces (to access the folder where the files are kept)
+            List<string> filedir = cwd.Split('\\').ToList();
+            filedir.RemoveRange(filedir.Count - 2, 2);
+            string path = String.Join("\\", filedir.ToArray()) + '\\' + dirName + '\\' + fileName;
 
             string information = "";
             if (!File.Exists(@path))

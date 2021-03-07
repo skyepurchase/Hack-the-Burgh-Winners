@@ -1,13 +1,13 @@
 Challenge name: Challenge 1
 
-Present Date: 2014-01-02
+Present Date: 2015-02-03
 
 Goal: 10
 
-Currently owned stock quantity: 0
+Currently owned stock quantity: -89
 
-Current stock price: 0
+Current stock price: 310.35
 
-Available money: £1000
+Available money: £27644.32
 
-Total profit: £0
+Total profit: £26644.32
