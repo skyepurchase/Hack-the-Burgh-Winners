@@ -7,7 +7,7 @@ namespace Hack_the_Burgh_competition
     class Database
     {
         private Dictionary<string, Dictionary<DateTime, string>> closeStocks = new Dictionary<string, Dictionary<DateTime, string>>();
-        private Dictionary<string, Dictionary<DateTime, string>> openStocks = new Dictionary<string, Dictionary<DateTime, string>>();
+        private Dictionary<string, Dictionary<DateTime, string>> openStocks = new Dictionary<string, Dictionary<DateTime, string>>(); // Don't worry about these I understand them
         private string[] stockTypes = { "Tech", "Oil", "Entertainment", "Travel", "Gold" };  // Hard code 5 types
 
         public Database()
@@ -17,28 +17,34 @@ namespace Hack_the_Burgh_competition
                 string[] csvLinesClose = File.ReadAllLines($"closestockdata{type}.csv");
                 string[] csvLinesOpen = File.ReadAllLines($"openstockdata{type}.csv");  // This is just the format of my python data collection files
 
-                for (int i = 0; i < csvLinesClose.Length; i++)
+                for (int i = 1; i < csvLinesClose.Length; i++)
                 {
                     string[] rowData = csvLinesClose[i].Split(','); // Get the date and price from .csv
 
                     string[] stringDate = rowData[0].Split('-');
                     int year = int.Parse(stringDate[0]);
-                    int day = int.Parse(stringDate[1]);
-                    int month = int.Parse(stringDate[2]);
+                    int day = int.Parse(stringDate[2]);
+                    int month = int.Parse(stringDate[1]);
                     DateTime date = new DateTime(year, month, day);  // Incorrectly convert to DateTime (but I know it works so who cares)
 
+                    if (!closeStocks.ContainsKey(type)) {
+                        closeStocks.Add(type, new Dictionary<DateTime, string>());
+                    }
                     closeStocks[type].Add(date, rowData[1]);  // For this specific stock add the price related to this date
                 }
-                for (int i = 0; i < csvLinesOpen.Length; i++)
+                for (int i = 1; i < csvLinesOpen.Length; i++)
                 {
                     string[] rowData = csvLinesOpen[i].Split(','); // Same as above but the other file
 
                     string[] stringDate = rowData[0].Split('-');
                     int year = int.Parse(stringDate[0]);
-                    int day = int.Parse(stringDate[1]);
-                    int month = int.Parse(stringDate[2]);
+                    int day = int.Parse(stringDate[2]);
+                    int month = int.Parse(stringDate[1]);
                     DateTime date = new DateTime(year, month, day);
 
+                    if (!openStocks.ContainsKey(type)) {
+                        openStocks.Add(type, new Dictionary<DateTime, string>());
+                    }
                     openStocks[type].Add(date, rowData[1]);
                 }
             }
@@ -48,8 +54,8 @@ namespace Hack_the_Burgh_competition
         {
             string[] stringDate = startDate.Split('-');
             int year = int.Parse(stringDate[0]);
-            int day = int.Parse(stringDate[1]);
-            int month = int.Parse(stringDate[2]);
+            int day = int.Parse(stringDate[2]);
+            int month = int.Parse(stringDate[1]);
             DateTime date = new DateTime(year, month, day); // Again convert to Datetime
 
             Dictionary<string, string> result = new Dictionary<string, string>();  // The link between dates and prices
@@ -74,7 +80,7 @@ namespace Hack_the_Burgh_competition
         {
             string[] stringDate = startDate.Split('-');
             int year = int.Parse(stringDate[0]);
-            int month = int.Parse(stringDate[2]);
+            int month = int.Parse(stringDate[1]);
             DateTime date = new DateTime(year, month, 1);// Same as above really
             date = date.AddMonths(1);
             date = date.AddDays(-1);  // except we don't care about days so take end of the month by going to next month then back
@@ -126,8 +132,8 @@ namespace Hack_the_Burgh_competition
         {
             string[] stringDate = startDate.Split('-');
             int year = int.Parse(stringDate[0]);
-            int day = int.Parse(stringDate[1]);
-            int month = int.Parse(stringDate[2]);
+            int day = int.Parse(stringDate[2]);
+            int month = int.Parse(stringDate[1]);
             DateTime date = new DateTime(year, month, day); // Usual datetime stuff
 
             return float.Parse(this.closeStocks[type][date]); // Prices are floats the value in £
@@ -137,8 +143,8 @@ namespace Hack_the_Burgh_competition
         {
             string[] stringDate = startDate.Split('-');
             int year = int.Parse(stringDate[0]);
-            int day = int.Parse(stringDate[1]);
-            int month = int.Parse(stringDate[2]);
+            int day = int.Parse(stringDate[2]);
+            int month = int.Parse(stringDate[1]);
             DateTime date = new DateTime(year, month, day); // This is getting boring to comment this block should probably create a function might do that tomorrow
 
             float currPrice = float.Parse(this.closeStocks[type][date]);
@@ -152,8 +158,8 @@ namespace Hack_the_Burgh_competition
         {
             string[] stringDate = startDate.Split('-');
             int year = int.Parse(stringDate[0]);
-            int day = int.Parse(stringDate[1]);
-            int month = int.Parse(stringDate[2]);
+            int day = int.Parse(stringDate[2]);
+            int month = int.Parse(stringDate[1]);
             DateTime date = new DateTime(year, month, day);  // Whelp last one
 
             float currPrice = float.Parse(this.closeStocks[type][date]);
