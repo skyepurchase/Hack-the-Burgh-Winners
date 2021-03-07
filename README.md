@@ -1,3 +1,3 @@
-# Hack-the-Burgh-Winners
+# InvestAid
 
 Nothing to report just yet
