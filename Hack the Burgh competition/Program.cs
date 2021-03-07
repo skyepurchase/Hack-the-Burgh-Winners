@@ -85,6 +85,24 @@ namespace Hack_the_Burgh_competition
                     return null;
             }
 
+            string[] dateArray1 = date.Split(',');
+            int year1 = int.Parse(dateArray1[0]);
+            int month1 = int.Parse(dateArray1[1]);
+            int day1 = int.Parse(dateArray1[2]);
+            DateTime actualDate = new DateTime(year1, month1, day1);
+
+            string[] dateArray2 = this.portfolio.getCurrentDate().Split('-');
+            int year2 = int.Parse(dateArray2[0]);
+            int month2 = int.Parse(dateArray2[1]);
+            int day2 = int.Parse(dateArray2[2]);
+            DateTime currentDate = new DateTime(year2, month2, day2);
+            DateTime tenBehind = currentDate.AddDays(10);
+
+            if (actualDate > tenBehind)
+            {
+                date = currentDate.Year.ToString() + ',' + currentDate.Month.ToString() + ',' + currentDate.Day.ToString();
+            }
+
             switch (mode)
             {
                 case "days":
