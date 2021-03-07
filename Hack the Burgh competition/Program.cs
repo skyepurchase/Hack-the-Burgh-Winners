@@ -166,6 +166,7 @@ namespace Hack_the_Burgh_competition
             if (this.portfolio == null)
             {
                 return false;
+                Console.WriteLine("No Portfolio");
             }
 
             string[] stringDate = this.portfolio.getCurrentDate().Split('-');
@@ -173,23 +174,24 @@ namespace Hack_the_Burgh_competition
             int month = int.Parse(stringDate[1]);
             int day = int.Parse(stringDate[2]);
             DateTime date = new DateTime(year, month, day);
+            DateTime newDate = date;
 
             switch (type)
             {
-                case "days":
-                    date.AddDays(amount);
+                case "Days":
+                    newDate = date.AddDays(amount);
                     break;
-                case "months":
-                    date.AddMonths(amount);
+                case "Months":
+                    newDate = date.AddMonths(amount);
                     break;
-                case "years":
-                    date.AddYears(amount);
+                case "Years":
+                    newDate = date.AddYears(amount);
                     break;
                 default:
                     return false;
             }
 
-            string dateRepr = date.Year.ToString() + '-' + date.Month.ToString() + '-' + date.Day.ToString();
+            string dateRepr = newDate.Year.ToString() + '-' + newDate.Month.ToString().PadLeft(2, '0') + '-' + newDate.Day.ToString().PadLeft(2, '0');
             this.portfolio.update(dateRepr, this.db.price(this.portfolio.getType(), dateRepr));
 
             return true;
