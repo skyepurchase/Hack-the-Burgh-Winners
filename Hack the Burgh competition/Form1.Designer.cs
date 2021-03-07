@@ -494,6 +494,7 @@ namespace Hack_the_Burgh_competition
             this.btnTimeSkip.TabIndex = 16;
             this.btnTimeSkip.Text = "Time Skip";
             this.btnTimeSkip.UseVisualStyleBackColor = true;
+            this.btnTimeSkip.Click += new System.EventHandler(this.btnTimeSkip_Click);
             // 
             // txtTimeUnits
             // 
@@ -534,7 +535,7 @@ namespace Hack_the_Burgh_competition
             this.cbYear.Enabled = false;
             this.cbYear.FormattingEnabled = true;
             this.cbYear.Items.AddRange(new object[] {
-            "2020"});
+            "2003"});
             this.cbYear.Location = new System.Drawing.Point(1220, 122);
             this.cbYear.MaxDropDownItems = 3;
             this.cbYear.Name = "cbYear";
@@ -548,15 +549,15 @@ namespace Hack_the_Burgh_competition
             this.cbDate.Enabled = false;
             this.cbDate.FormattingEnabled = true;
             this.cbDate.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
             "10",
             "11",
             "12",
@@ -586,6 +587,7 @@ namespace Hack_the_Burgh_competition
             this.cbDate.TabIndex = 11;
             this.cbDate.Text = "Select Date";
             this.cbDate.SelectedIndexChanged += new System.EventHandler(this.cbDate_SelectedIndexChanged);
+
             // 
             // cbMonth
             // 
@@ -654,6 +656,7 @@ namespace Hack_the_Burgh_competition
             this.btnSell.TabIndex = 4;
             this.btnSell.Text = "Sell";
             this.btnSell.UseVisualStyleBackColor = true;
+            this.btnSell.Click += new System.EventHandler(this.btnSell_Click);
             // 
             // btnBuy
             // 
@@ -663,6 +666,8 @@ namespace Hack_the_Burgh_competition
             this.btnBuy.TabIndex = 3;
             this.btnBuy.Text = "Buy";
             this.btnBuy.UseVisualStyleBackColor = true;
+            this.btnBuy.Click += new System.EventHandler(this.btnBuy_Click);
+
             // 
             // txtQuantity
             // 
@@ -695,11 +700,12 @@ namespace Hack_the_Burgh_competition
             this.chart1.Name = "chart1";
             series21.ChartArea = "ChartArea1";
             series21.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series21.IsVisibleInLegend = false;
+            series21.IsVisibleInLegend = true;
             series21.Legend = "Legend1";
             series21.Name = "Open";
             series22.ChartArea = "ChartArea1";
             series22.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series22.IsVisibleInLegend = true;
             series22.Legend = "Legend1";
             series22.Name = "Close";
             this.chart1.Series.Add(series21);
